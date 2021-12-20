@@ -1,7 +1,3 @@
-# Script for downloading cs61c videos
-
-# Requirement: install youtube-dl (https://github.com/rg3/youtube-dl/)
-
 import os
 import re
 import argparse
