@@ -11,12 +11,17 @@ import os
 def vtt_to_srt(输入文件):
     输入文件 = 输入文件.strip('"')
     输出文件 = os.path.splitext(输入文件)[0] + '.srt'
-    print('\n\n\n')
+
+    if os.path.exists(输出文件):
+        print(f'{输出文件} already exist')
+        return
+
     command = f'ffmpeg -y -i "{输入文件}" "{输出文件}"'
-    print('\n\n\n')
     print(f'command: {command}')
-    print('\n\n\n')
-    os.system(command)
+    state = os.system(command)
+
+    if state != 0:
+        raise RuntimeError(f'Fail to convert vtt file {输入文件}')
 
     try:
         with open(输出文件, 'r', encoding='utf-8') as f:
@@ -27,21 +32,8 @@ def vtt_to_srt(输入文件):
 
     输入字幕列表 = list(srt.parse(输入文件内容))
     输出字幕列表 = []
-    # for index, subtitle in enumerate(输入字幕列表):
-    #     if index == 0:
-    #         subtitle.content = subtitle.content.split('\n')[1]
-    #         输出字幕列表.append(subtitle)
-    #     本句字幕内容 = subtitle.content
-    #     上一句字幕内容 = 输入字幕列表[index - 1].content
-    #     本句字幕内容分行 = 本句字幕内容.split('\n')
-    #     上一句字幕内容分行 = 上一句字幕内容.split('\n')
-    #     if 本句字幕内容分行[0] in 上一句字幕内容分行 and 本句字幕内容分行[1] == ' ':
-    #         输出字幕列表[-1].end = subtitle.end
-    #     elif 本句字幕内容分行[0] in 上一句字幕内容分行 and 本句字幕内容分行[1] != ' ':
-    #         subtitle.content = 本句字幕内容分行[1]
-    #         输出字幕列表.append(subtitle)
 
-    for index, subtitle in enumerate(输入字幕列表):
+    for _, subtitle in enumerate(输入字幕列表):
         if subtitle.end.seconds == subtitle.start.seconds and subtitle.end.microseconds - subtitle.start.microseconds == 10000:
             continue
         subtitle.content = subtitle.content.split('\n')[1]
