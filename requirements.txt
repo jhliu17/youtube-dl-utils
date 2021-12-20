@@ -1,0 +1,2 @@
+youtube-dl~=2021.2.0
+shadowsocksr-cli~=2.1.0
