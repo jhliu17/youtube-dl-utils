@@ -18,4 +18,4 @@ You can install [FFmpeg](https://ffmpeg.org/)
 ## Usage
 
 
-## Acknowledgement
+## Acknowledgements
